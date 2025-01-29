@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citas - Local de Belleza</title>
+    <link rel="stylesheet" href="style.css"> <!-- Vincula el archivo CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Agendar Cita</h1>
+        
+        <!-- Selección de Usuario -->
+        <button id="btnInvitado">INVITADO</button>
+        <button id="btnUsuarioRegistrado">USUARIO REGISTRADO</button>
+        
+        <!-- Formulario para Invitado o Usuario Registrado -->
+        <div id="formUsuarioRegistrado" class="hidden">
+            <h3>Usuario Registrado</h3>
+            <form id="citaForm">
+                <label for="servicio">Selecciona un servicio:</label>
+                <select id="servicio" required>
+                    <option value="Limpieza Facial">Limpieza Facial</option>
+                    <option value="Masajes">Masajes</option>
+                    <option value="Depilación">Depilación</option>
+                </select>
+                
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+                
+                <label for="hora">Hora:</label>
+                <select id="hora" required>
+                    <option value="08:00 AM">08:00 AM</option>
+                    <option value="09:00 AM">09:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="01:00 PM">01:00 PM</option>
+                    <option value="02:00 PM">02:00 PM</option>
+                    <option value="03:00 PM">03:00 PM</option>
+                    <option value="04:00 PM">04:00 PM</option>
+                    <option value="05:00 PM">05:00 PM</option>
+                    <option value="06:00 PM">06:00 PM</option>
+                </select>
+
+                <button type="submit">Seleccionar Cita</button>
+            </form>
+        </div>
+
+        <!-- Formulario de Datos -->
+        <div id="datosCliente" class="hidden">
+            <h3>Introduce tus datos para confirmar la cita</h3>
+            <form id="formDatos">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" required>
+                
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" pattern="[0-9]{9}" placeholder="Ingrese solo números" required>
+                
+                <label for="email">Correo:</label>
+                <input type="email" id="email" required>
+                
+                <button type="submit">Aceptar Cita</button>
+            </form>
+        </div>
+
+        <!-- Confirmación -->
+        <div id="confirmacion" class="hidden">
+            <h3>¡Cita Confirmada!</h3>
+            <p id="mensajeConfirmacion"></p>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar el formulario de usuario registrado
+        document.getElementById('btnUsuarioRegistrado').addEventListener('click', function() {
+            document.getElementById('formUsuarioRegistrado').classList.remove('hidden');
+        });
+
+        // Mostrar el formulario de invitado
+        document.getElementById('btnInvitado').addEventListener('click', function() {
+            alert("Por favor, regístrate para agendar una cita.");
+        });
+
+        // Enviar la cita
+        document.getElementById('citaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('formUsuarioRegistrado').classList.add('hidden');
+            document.getElementById('datosCliente').classList.remove('hidden');
+        });
+
+        // Confirmación de la cita
+        document.getElementById('formDatos').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const telefono = document.getElementById('telefono').value;
+            const email = document.getElementById('email').value;
+            const servicio = document.getElementById('servicio').value;
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
+
+            const citaInfo = `Nombre: ${nombre}\nTeléfono: ${telefono}\nCorreo: ${email}\nServicio: ${servicio}\nFecha: ${fecha}\nHora: ${hora}`;
+
+            // Aquí podrías integrar una notificación por correo (por ejemplo con Google Forms)
+            console.log(citaInfo);
+
+            alert("¡Cita confirmada! Te hemos enviado la notificación.");
+
+            document.getElementById('formDatos').reset();
+            document.getElementById('datosCliente').classList.add('hidden');
+            document.getElementById('confirmacion').classList.remove('hidden');
+            document.getElementById('mensajeConfirmacion').textContent = citaInfo;
+        });
+    </script>
+</body>
+</html>
