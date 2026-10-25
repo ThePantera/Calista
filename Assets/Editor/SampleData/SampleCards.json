@@ -1,0 +1,14 @@
+{
+  "cards": [
+    { "cardID": "CN001", "cardName": "Dexter",                  "setID": "CN_BASE", "rarity": "Common",        "baseMarketValue": 0.15,  "glowColor": "", "illustrationPath": "" },
+    { "cardID": "CN002", "cardName": "Dee Dee",                 "setID": "CN_BASE", "rarity": "Common",        "baseMarketValue": 0.10,  "glowColor": "", "illustrationPath": "" },
+    { "cardID": "CN003", "cardName": "Johnny Bravo",            "setID": "CN_BASE", "rarity": "Common",        "baseMarketValue": 0.12,  "glowColor": "", "illustrationPath": "" },
+    { "cardID": "CN004", "cardName": "Courage the Cowardly Dog","setID": "CN_BASE", "rarity": "Uncommon",      "baseMarketValue": 0.60,  "glowColor": "", "illustrationPath": "" },
+    { "cardID": "CN005", "cardName": "Ed, Edd n Eddy",          "setID": "CN_BASE", "rarity": "Uncommon",      "baseMarketValue": 0.55,  "glowColor": "", "illustrationPath": "" },
+    { "cardID": "CN006", "cardName": "Blossom",                 "setID": "CN_BASE", "rarity": "Rare",          "baseMarketValue": 2.50,  "glowColor": "#FF6FA5", "illustrationPath": "" },
+    { "cardID": "CN007", "cardName": "Buttercup",               "setID": "CN_BASE", "rarity": "Rare",          "baseMarketValue": 2.40,  "glowColor": "#5CD65C", "illustrationPath": "" },
+    { "cardID": "CN008", "cardName": "Bubbles",                 "setID": "CN_BASE", "rarity": "HoloRare",      "baseMarketValue": 8.00,  "glowColor": "#6EC6FF", "illustrationPath": "" },
+    { "cardID": "CN009", "cardName": "Samurai Jack",            "setID": "CN_BASE", "rarity": "HoloRare",      "baseMarketValue": 9.50,  "glowColor": "", "illustrationPath": "" },
+    { "cardID": "CN010", "cardName": "Dexter's Laboratory (Full Art)", "setID": "CN_BASE", "rarity": "SecretFullArt", "baseMarketValue": 45.00, "glowColor": "#FFD42A", "illustrationPath": "" }
+  ]
+}
