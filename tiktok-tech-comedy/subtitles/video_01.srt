@@ -1,0 +1,47 @@
+1
+00:00:00,200 --> 00:00:02,078
+Bobi, si uso la
+misma contraseña para
+
+2
+00:00:02,078 --> 00:00:03,600
+todo… ¿me hackean
+todo de una?
+
+3
+00:00:04,200 --> 00:00:07,877
+¡Sí, Pato! Si te roban una
+contraseña, pueden probarla
+
+4
+00:00:07,877 --> 00:00:10,600
+en tu correo, tus
+redes y otras cuentas.
+
+5
+00:00:12,050 --> 00:00:15,000
+Entonces… ¿mi contraseña
+“123456” no es segura?
+
+6
+00:00:15,200 --> 00:00:17,800
+¡ESO NO ES UNA CONTRASEÑA,
+ES UNA INVITACIÓN!
+
+7
+00:00:18,200 --> 00:00:22,105
+Usá una contraseña diferente
+para cada cuenta, un gestor
+
+8
+00:00:22,105 --> 00:00:25,800
+de contraseñas y activá la
+verificación en dos pasos.
+
+9
+00:00:27,000 --> 00:00:28,500
+¿Y dónde guardo todo eso?
+
+10
+00:00:28,600 --> 00:00:29,900
+¡En un gestor, Pato!
