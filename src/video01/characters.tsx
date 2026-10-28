@@ -16,20 +16,29 @@ const browCfg = (expr: Expr, side: -1 | 1): [number, number] => {
   }
 };
 
-const Eye: React.FC<{cx: number; cy: number; r: number; look: Look; scale: number; blink: number; side: -1 | 1; expr: Expr}> = ({cx, cy, r, look, scale, blink, side, expr}) => {
+const Eye: React.FC<{cx: number; cy: number; r: number; look: Look; scale: number; blink: number; side: -1 | 1; expr: Expr; variant: 'digital' | 'bead'}> = ({cx, cy, r, look, scale, blink, side, expr, variant}) => {
   const R = r * scale;
-  const ir = R * 0.45;
   const [dy, tilt] = browCfg(expr, side);
+  const browColor = variant === 'digital' ? '#8ef6ff' : '#b2412c';
   return (
     <g>
       <g transform={`translate(${cx} ${cy}) scale(1 ${1 - blink * 0.92})`}>
-        <circle r={R} fill="#fff" stroke={INK} strokeWidth={4} />
-        <circle cx={look.x * R * 0.42} cy={look.y * R * 0.42} r={ir} fill="#3b8fd9" />
-        <circle cx={look.x * R * 0.42} cy={look.y * R * 0.42} r={ir * 0.55} fill={INK} />
-        <circle cx={look.x * R * 0.42 - ir * 0.3} cy={look.y * R * 0.42 - ir * 0.3} r={ir * 0.2} fill="#fff" />
+        {variant === 'digital' ? (
+          <g>
+            <rect x={-R} y={-R * 0.85} width={R * 2} height={R * 1.7} rx={R * 0.5} fill="#8ef6ff" />
+            <rect x={-R * 0.38 + look.x * R * 0.35} y={-R * 0.5 + look.y * R * 0.3} width={R * 0.76} height={R} rx={R * 0.25} fill="#0b2a40" />
+            <rect x={-R * 0.62} y={-R * 0.62} width={R * 0.3} height={R * 0.3} rx={3} fill="#fff" />
+          </g>
+        ) : (
+          <g>
+            <ellipse rx={R * 0.8} ry={R} fill="#2a1a2e" />
+            <circle cx={-R * 0.22 + look.x * R * 0.18} cy={-R * 0.38 + look.y * R * 0.18} r={R * 0.3} fill="#fff" />
+            <circle cx={R * 0.25 + look.x * R * 0.18} cy={R * 0.3 + look.y * R * 0.18} r={R * 0.14} fill="#fff" />
+          </g>
+        )}
       </g>
       <g transform={`translate(${cx} ${cy - R - 8 + dy}) rotate(${side * tilt})`}>
-        <line x1={-r * 0.8} y1={0} x2={r * 0.8} y2={0} stroke={INK} strokeWidth={9} strokeLinecap="round" />
+        <line x1={-r * 0.8} y1={0} x2={r * 0.8} y2={0} stroke={browColor} strokeWidth={variant === 'digital' ? 7 : 9} strokeLinecap="round" />
       </g>
     </g>
   );
@@ -59,14 +68,6 @@ const Mouth: React.FC<{cx: number; cy: number; w: number; open: number; expr: Ex
   return <path transform={`translate(${cx} ${cy})`} d={d} stroke={INK} strokeWidth={6} fill="none" strokeLinecap="round" />;
 };
 
-const Arm: React.FC<{side: -1 | 1; a: number}> = ({side, a}) => (
-  <g transform={`translate(${side * 158} -222) rotate(${-side * a})`}>
-    <line x1={0} y1={0} x2={0} y2={96} stroke="#c99a10" strokeWidth={28} strokeLinecap="round" />
-    <line x1={0} y1={0} x2={0} y2={96} stroke="#FFD93B" strokeWidth={21} strokeLinecap="round" />
-    <rect x={-17} y={-6} width={34} height={30} rx={10} fill="#fff" stroke="#d9d9d9" strokeWidth={2} />
-    <circle cx={0} cy={106} r={23} fill="#FFD93B" stroke="#c99a10" strokeWidth={5} />
-  </g>
-);
 
 const blinkAmt = (frame: number, seed: number) => {
   const p = (frame + seed) % 118;
@@ -76,105 +77,143 @@ const blinkAmt = (frame: number, seed: number) => {
 type CharProps = {
   x: number; y: number; scale: number; expr: Expr; open: number; frame: number;
   look?: Look; eyeScale?: number; tilt?: number; sx?: number; sy?: number;
+  armL?: number; armR?: number;
 };
 
-export const Bobi: React.FC<CharProps & {armL?: number; armR?: number}> = ({
+/* ---------------- BOBI: robot-esponja? No: mascota digital lima, cuerpo alto con visor ---------------- */
+const BobiArm: React.FC<{side: -1 | 1; a: number}> = ({side, a}) => (
+  <g transform={`translate(${side * 120} -228) rotate(${-side * a})`}>
+    <line x1={0} y1={0} x2={0} y2={92} stroke="#6f9a14" strokeWidth={30} strokeLinecap="round" />
+    <line x1={0} y1={0} x2={0} y2={92} stroke="#c6e64b" strokeWidth={23} strokeLinecap="round" />
+    <rect x={-20} y={-8} width={40} height={34} rx={14} fill="#fff" stroke="#c9d3da" strokeWidth={3} />
+    <rect x={-18} y={92} width={36} height={30} rx={13} fill="#c6e64b" stroke="#6f9a14" strokeWidth={5} />
+    <rect x={-18} y={88} width={36} height={8} fill="#2d3b8c" />
+  </g>
+);
+
+export const Bobi: React.FC<CharProps> = ({
   x, y, scale, expr, open, frame, look = {x: 0, y: 0}, eyeScale = 1, tilt = 0, sx = 1, sy = 1, armL = 8, armR = 8,
 }) => {
   const bl = blinkAmt(frame, 7);
+  const glow = 0.6 + 0.4 * Math.sin(frame * 0.2);
   return (
     <g transform={`translate(${x} ${y}) rotate(${tilt}) scale(${scale * sx} ${scale * sy})`}>
-      {/* piernas y zapatos */}
-      <rect x={-62} y={-112} width={26} height={84} fill="#e8c43a" />
-      <rect x={36} y={-112} width={26} height={84} fill="#e8c43a" />
-      <rect x={-62} y={-60} width={26} height={22} fill="#fff" />
-      <rect x={36} y={-60} width={26} height={22} fill="#fff" />
-      <ellipse cx={-56} cy={-22} rx={44} ry={17} fill="#1d1d28" />
-      <ellipse cx={56} cy={-22} rx={44} ry={17} fill="#1d1d28" />
-      <Arm side={-1} a={armL} />
-      <Arm side={1} a={armR} />
-      {/* cuerpo esponja */}
       <defs>
-        <clipPath id="bobiBody"><rect x={-160} y={-480} width={320} height={370} rx={34} /></clipPath>
+        <clipPath id="bobiBody"><rect x={-125} y={-450} width={250} height={330} rx={74} /></clipPath>
+        <pattern id="bobiPix" width={24} height={24} patternUnits="userSpaceOnUse">
+          <rect width={12} height={12} fill="#b6d63a" /><rect x={12} y={12} width={12} height={12} fill="#b6d63a" />
+        </pattern>
       </defs>
-      <rect x={-160} y={-480} width={320} height={370} rx={34} fill="#FFD93B" stroke="#c99a10" strokeWidth={6} />
+      {/* piernas cortas y gruesas + zapatillas */}
+      <rect x={-66} y={-120} width={48} height={84} rx={14} fill="#a9cd3a" />
+      <rect x={18} y={-120} width={48} height={84} rx={14} fill="#a9cd3a" />
+      <rect x={-80} y={-58} width={76} height={34} rx={16} fill="#2d3b8c" stroke="#1a2460" strokeWidth={4} />
+      <rect x={4} y={-58} width={76} height={34} rx={16} fill="#2d3b8c" stroke="#1a2460" strokeWidth={4} />
+      <rect x={-72} y={-34} width={60} height={9} rx={4} fill="#fff" />
+      <rect x={12} y={-34} width={60} height={9} rx={4} fill="#fff" />
+      <BobiArm side={-1} a={armL} />
+      <BobiArm side={1} a={armR} />
+      {/* auriculares y antena */}
+      <rect x={-148} y={-440} width={34} height={86} rx={16} fill="#2d3b8c" stroke="#1a2460" strokeWidth={4} />
+      <rect x={114} y={-440} width={34} height={86} rx={16} fill="#2d3b8c" stroke="#1a2460" strokeWidth={4} />
+      <line x1={22} y1={-448} x2={44} y2={-510} stroke="#4a5a68" strokeWidth={7} strokeLinecap="round" />
+      <circle cx={46} cy={-516} r={14} fill="#ff5a7a" stroke="#fff" strokeWidth={4} opacity={0.7 + 0.3 * glow} />
+      {/* cuerpo */}
+      <rect x={-125} y={-450} width={250} height={330} rx={74} fill="#c6e64b" stroke="#6f9a14" strokeWidth={6} />
       <g clipPath="url(#bobiBody)">
-        <rect x={-160} y={-232} width={320} height={70} fill="#fff" />
-        <rect x={-160} y={-165} width={320} height={60} fill="#7a4a24" />
-        <rect x={-160} y={-172} width={320} height={10} fill="#4d2d14" />
-        <rect x={-14} y={-172} width={28} height={10} fill="#d4b22a" />
+        <rect x={-125} y={-450} width={250} height={330} fill="url(#bobiPix)" opacity={0.5} />
+        {/* circuitos */}
+        <g stroke="#6f9a14" strokeWidth={4} fill="none" opacity={0.8}>
+          <polyline points="-125,-330 -100,-330 -88,-310 -88,-285" /><polyline points="125,-340 102,-340 92,-320 92,-290" />
+        </g>
+        <circle cx={-88} cy={-283} r={6} fill="#6f9a14" /><circle cx={92} cy={-288} r={6} fill="#6f9a14" />
+        {/* bata corta blanca */}
+        <rect x={-125} y={-268} width={250} height={110} fill="#fff" />
+        <line x1={0} y1={-268} x2={0} y2={-158} stroke="#c9d3da" strokeWidth={4} />
+        <rect x={-100} y={-215} width={44} height={34} rx={6} fill="none" stroke="#c9d3da" strokeWidth={4} />
+        <rect x={56} y={-215} width={44} height={34} rx={6} fill="none" stroke="#c9d3da" strokeWidth={4} />
+        {/* pantalones */}
+        <rect x={-125} y={-160} width={250} height={50} fill="#7a4a24" />
       </g>
-      {/* poros */}
-      {[[-128, -440, 11], [120, -432, 13], [-138, -330, 9], [136, -300, 10], [-82, -462, 7], [78, -460, 8], [-120, -255, 0], [100, -262, 0]].map(([px, py, pr], i) =>
-        pr > 0 ? <ellipse key={i} cx={px} cy={py} rx={pr} ry={pr * 0.8} fill="#e5b61f" /> : null)}
-      {/* camisa: cuello y corbata */}
-      <path d="M -34 -232 L 0 -196 L -2 -232 Z" fill="#f0f0f0" stroke="#cfcfcf" strokeWidth={2} />
-      <path d="M 34 -232 L 0 -196 L 2 -232 Z" fill="#f0f0f0" stroke="#cfcfcf" strokeWidth={2} />
-      <path d="M -11 -226 L 11 -226 L 7 -206 L 0 -206 Z" fill="#c8202f" />
-      <path d="M -9 -208 L 9 -208 L 18 -168 L 0 -150 L -18 -168 Z" fill="#e0303f" stroke="#9b1420" strokeWidth={2} />
-      {/* mechón */}
-      <path d="M -14 -480 q -6 -26 -26 -34 M 0 -480 q 0 -32 6 -44 M 14 -480 q 8 -24 28 -30" stroke="#7a4a24" strokeWidth={8} strokeLinecap="round" fill="none" />
-      {/* cara */}
-      <circle cx={-108} cy={-326} r={20} fill="#ff9a6b" opacity={0.55} />
-      <circle cx={108} cy={-326} r={20} fill="#ff9a6b" opacity={0.55} />
-      <Eye cx={-58} cy={-392} r={42} look={look} scale={eyeScale} blink={bl} side={-1} expr={expr} />
-      <Eye cx={58} cy={-392} r={42} look={look} scale={eyeScale} blink={bl} side={1} expr={expr} />
-      <g fill="none" stroke="#2a1a2e" strokeWidth={7}>
-        <circle cx={-58} cy={-392} r={54} /><circle cx={58} cy={-392} r={54} />
-        <path d="M -5 -396 Q 0 -404 5 -396" />
-        <line x1={-112} y1={-396} x2={-150} y2={-402} /><line x1={112} y1={-396} x2={150} y2={-402} />
-      </g>
-      <Mouth cx={0} cy={-296} w={130} open={open} expr={expr} />
+      <path d="M -40 -268 L 0 -228 L -4 -268 Z" fill="#eef2f5" stroke="#c9d3da" strokeWidth={3} />
+      <path d="M 40 -268 L 0 -228 L 4 -268 Z" fill="#eef2f5" stroke="#c9d3da" strokeWidth={3} />
+      {/* moño rojo */}
+      <path d="M 0 -250 L -28 -266 L -28 -234 Z" fill="#e0303f" stroke="#9b1420" strokeWidth={3} />
+      <path d="M 0 -250 L 28 -266 L 28 -234 Z" fill="#e0303f" stroke="#9b1420" strokeWidth={3} />
+      <rect x={-8} y={-258} width={16} height={16} rx={5} fill="#b81d2c" />
+      {/* visor con ojos digitales */}
+      <rect x={-104} y={-452} width={208} height={108} rx={40} fill="#16264a" stroke="#8ef6ff" strokeWidth={5} />
+      <rect x={-92} y={-442} width={80} height={10} rx={5} fill="#fff" opacity={0.18} />
+      <Eye cx={-46} cy={-398} r={27} look={look} scale={eyeScale} blink={bl} side={-1} expr={expr} variant="digital" />
+      <Eye cx={46} cy={-398} r={27} look={look} scale={eyeScale} blink={bl} side={1} expr={expr} variant="digital" />
+      <Mouth cx={0} cy={-304} w={100} open={open} expr={expr} />
     </g>
   );
 };
 
-const starPoints = (cx: number, cy: number, R: number, r: number) => {
-  const pts: string[] = [];
-  for (let i = 0; i < 10; i++) {
-    const ang = (-90 + i * 36) * (Math.PI / 180);
-    const rad = i % 2 === 0 ? R : r;
-    pts.push(`${(cx + Math.cos(ang) * rad).toFixed(1)},${(cy + Math.sin(ang) * rad).toFixed(1)}`);
-  }
-  return pts.join(' ');
+/* ---------------- PATO: estrella de mar coral de brazos finos y articulados ---------------- */
+const CORAL = '#ff8a75';
+const CORAL_D = '#e2634d';
+
+const limb = (cx: number, cy: number, angDeg: number, len: number, base: number, tip: number) => {
+  const a = (angDeg * Math.PI) / 180;
+  const ux = Math.cos(a), uy = Math.sin(a), nx = -uy, ny = ux;
+  const p = (l: number, w: number) => `${(cx + ux * l + nx * w).toFixed(1)},${(cy + uy * l + ny * w).toFixed(1)}`;
+  return `${p(0, -base)} ${p(len, -tip)} ${p(len, tip)} ${p(0, base)}`;
 };
 
+const PatoArm: React.FC<{side: -1 | 1; a: number}> = ({side, a}) => (
+  <g transform={`translate(${side * 58} -292) rotate(${-side * a})`}>
+    <line x1={0} y1={0} x2={0} y2={92} stroke={CORAL} strokeWidth={34} strokeLinecap="round" />
+    <g transform={`translate(0 92) rotate(${-side * Math.min(60, a * 0.45)})`}>
+      <line x1={0} y1={0} x2={0} y2={92} stroke={CORAL} strokeWidth={26} strokeLinecap="round" />
+      <circle cx={0} cy={96} r={20} fill={CORAL} />
+      {[18, 44, 70].map((d) => <circle key={d} cx={0} cy={d} r={4.5} fill={CORAL_D} />)}
+    </g>
+    <circle cx={0} cy={92} r={19} fill={CORAL} />
+    {[16, 44, 70].map((d) => <circle key={d} cx={0} cy={d} r={5} fill={CORAL_D} />)}
+  </g>
+);
+
 export const Pato: React.FC<CharProps> = ({
-  x, y, scale, expr, open, frame, look = {x: 0, y: 0}, eyeScale = 1, tilt = 0, sx = 1, sy = 1,
+  x, y, scale, expr, open, frame, look = {x: 0, y: 0}, eyeScale = 1, tilt = 0, sx = 1, sy = 1, armL = 52, armR = 52,
 }) => {
   const bl = blinkAmt(frame, 41);
-  const poly = starPoints(0, -235, 215, 122);
+  const C = {x: 0, y: -255};
+  const legTip = (s: number) => ({x: s * 118, y: C.y + 162});
   return (
     <g transform={`translate(${x} ${y}) rotate(${tilt}) scale(${scale * sx} ${scale * sy})`}>
-      <defs>
-        <clipPath id="patoBand"><rect x={-300} y={-195} width={600} height={110} /></clipPath>
-        <clipPath id="patoHat"><rect x={-300} y={-560} width={600} height={140} /></clipPath>
-        <clipPath id="patoBrim"><rect x={-300} y={-440} width={600} height={14} /></clipPath>
-        <clipPath id="patoWaist"><rect x={-300} y={-195} width={600} height={18} /></clipPath>
-      </defs>
-      <polygon points={poly} fill="#ff8fb3" stroke="#ff8fb3" strokeWidth={40} strokeLinejoin="round" />
-      <polygon points={poly} fill="#ff8fb3" />
-      {[[-120, -300, 9], [130, -310, 10], [-20, -440, 8], [30, -420, 6], [-180, -150, 8], [190, -140, 8], [-60, -80, 7], [70, -70, 7]].map(([px, py, pr], i) =>
-        <circle key={i} cx={px} cy={py} r={pr} fill="#f06c98" />)}
-      <g clipPath="url(#patoBand)">
-        <polygon points={poly} fill="#38b36a" stroke="#38b36a" strokeWidth={40} strokeLinejoin="round" />
+      <PatoArm side={-1} a={armL} />
+      <PatoArm side={1} a={armR} />
+      {/* brazo superior y patas: cinco brazos largos y finos */}
+      {[limb(C.x, C.y, -90, 215, 40, 13), limb(C.x, C.y, 54, 205, 40, 13), limb(C.x, C.y, 126, 205, 40, 13)].map((pts, i) => (
+        <polygon key={i} points={pts} fill={CORAL} stroke={CORAL} strokeWidth={22} strokeLinejoin="round" />
+      ))}
+      <circle cx={C.x} cy={C.y} r={84} fill={CORAL} />
+      {/* textura de puntos en filas */}
+      {[40, 80, 120, 160].map((d) => <circle key={`t${d}`} cx={((d % 80 === 0) ? 7 : -7)} cy={C.y - 70 - d * 0.78} r={5.5} fill={CORAL_D} opacity={0.85} />)}
+      {[52, 92, 132, 170].map((d) => <circle key={`l${d}`} cx={-d * 0.58 + 8} cy={C.y + d * 0.8 - 20} r={5} fill={CORAL_D} opacity={0.85} />)}
+      {[52, 92, 132, 170].map((d) => <circle key={`r${d}`} cx={d * 0.58 - 8} cy={C.y + d * 0.8 - 20} r={5} fill={CORAL_D} opacity={0.85} />)}
+      {/* shorts verdes con tirantes */}
+      <g stroke="#2f9a5a" strokeWidth={66} strokeLinecap="butt">
+        <line x1={24} y1={-223} x2={84} y2={-140} /><line x1={-24} y1={-223} x2={-84} y2={-140} />
       </g>
-      <g clipPath="url(#patoWaist)">
-        <polygon points={poly} fill="#1f7f4a" stroke="#1f7f4a" strokeWidth={40} strokeLinejoin="round" />
+      <g stroke="#43c274" strokeWidth={58} strokeLinecap="butt">
+        <line x1={24} y1={-223} x2={84} y2={-140} /><line x1={-24} y1={-223} x2={-84} y2={-140} />
       </g>
-      <g clipPath="url(#patoHat)">
-        <polygon points={poly} fill="#3b6fd9" stroke="#3b6fd9" strokeWidth={40} strokeLinejoin="round" />
+      <rect x={-62} y={-218} width={124} height={48} rx={10} fill="#43c274" stroke="#2f9a5a" strokeWidth={5} />
+      <line x1={0} y1={-218} x2={0} y2={-170} stroke="#2f9a5a" strokeWidth={4} />
+      <g stroke="#f4c430" strokeWidth={13} strokeLinecap="round">
+        <line x1={-48} y1={-214} x2={-60} y2={-240} /><line x1={48} y1={-214} x2={60} y2={-240} />
       </g>
-      <g clipPath="url(#patoBrim)">
-        <polygon points={poly} fill="#ffd23f" stroke="#ffd23f" strokeWidth={40} strokeLinejoin="round" />
-      </g>
-      <circle cx={0} cy={-470} r={22} fill="#fff" stroke="#d8e4f5" strokeWidth={3} />
-      <line x1={0} y1={-177} x2={0} y2={-90} stroke="#1f7f4a" strokeWidth={5} />
-      <circle cx={-90} cy={-262} r={17} fill="#ff6d9a" opacity={0.5} />
-      <circle cx={90} cy={-262} r={17} fill="#ff6d9a" opacity={0.5} />
-      <Eye cx={-40} cy={-310} r={32} look={look} scale={eyeScale} blink={bl} side={-1} expr={expr} />
-      <Eye cx={40} cy={-310} r={32} look={look} scale={eyeScale} blink={bl} side={1} expr={expr} />
-      <Mouth cx={0} cy={-246} w={84} open={open} expr={expr} />
+      <circle cx={-38} cy={-208} r={8} fill="#fff" stroke="#c99a10" strokeWidth={3} />
+      <circle cx={38} cy={-208} r={8} fill="#fff" stroke="#c99a10" strokeWidth={3} />
+      {/* cara */}
+      <circle cx={-60} cy={-252} r={14} fill="#ff6f5a" opacity={0.5} />
+      <circle cx={60} cy={-252} r={14} fill="#ff6f5a" opacity={0.5} />
+      <Eye cx={-32} cy={-282} r={25} look={look} scale={eyeScale} blink={bl} side={-1} expr={expr} variant="bead" />
+      <Eye cx={32} cy={-282} r={25} look={look} scale={eyeScale} blink={bl} side={1} expr={expr} variant="bead" />
+      <Mouth cx={0} cy={-232} w={64} open={open} expr={expr} />
     </g>
   );
 };

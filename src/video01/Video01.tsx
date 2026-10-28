@@ -24,7 +24,7 @@ const camera = (t: number): Cam => {
     s = 1 + 0.03 * ((t - 4) / 8);
   } else if (t < 15.2) {
     fy = 960;
-    s = 1 + 0.18 * ease((t - 12.2) / 2.0) + 0.55 * ease((t - 14.1) / 0.8);
+    s = 1 + 0.18 * ease((t - 12.05) / 2.0) + 0.55 * ease((t - 14.1) / 0.8);
     fy = lerp(1000, 930, ease((t - 14.1) / 0.8));
   } else if (t < 18) {
     s = 1 + 0.1 * ((t - 15.2) / 2.8);
@@ -64,7 +64,8 @@ export const Video01: React.FC = () => {
     const worry: Expr = 'worry';
     scene = (
       <Pato x={540} y={1400 + bob} scale={1.6} expr={worry} open={open(1, t)} frame={frame}
-        look={{x: 0.1, y: -0.1}} tilt={Math.sin(frame * 0.07) * 2} sy={breathe} />
+        look={{x: 0.1, y: -0.1}} tilt={Math.sin(frame * 0.07) * 2} sy={breathe}
+        armL={60 + Math.sin(frame * 0.15) * 14 + 50 * bump(t, 1.6, 0.3, 0.8)} armR={60 + Math.cos(frame * 0.13) * 14 + 40 * bump(t, 2.4, 0.3, 0.8)} />
     );
   } else if (t < 12) {
     const k = keyState(t);
@@ -88,7 +89,8 @@ export const Video01: React.FC = () => {
         <Pato x={540} y={1400 + bob - wow * 20} scale={1.6} expr={expr}
           open={t < 15.0 ? open(3, t) : 0.95} frame={frame}
           look={{x: 0, y: lerp(-0.1, 0.05, wow)}} eyeScale={1 + 0.55 * ex} tilt={jit * 3.5 + Math.sin(frame * 0.07)}
-          sx={1 + 0.06 * wow} sy={breathe + 0.05 * wow} />
+          sx={1 + 0.06 * wow} sy={breathe + 0.05 * wow}
+          armL={lerp(55, 155, wow) + jit * 12} armR={lerp(55, 155, wow) - jit * 12} />
         {sweat && [0, 1, 2].map((i) => {
           const p = ((t - 14.0) * 1.4 + i / 3) % 1;
           return <path key={i} d="M 0 -18 C 14 2 14 16 0 16 C -14 16 -14 2 0 -18 Z" fill="#8fe3ff" stroke="#fff" strokeWidth={3}
@@ -119,7 +121,8 @@ export const Video01: React.FC = () => {
     scene = (
       <g>
         <Pato x={290} y={1350 + bob} scale={1.0} expr="confusion" open={open(6, t)} frame={frame}
-          look={{x: 0.5, y: -0.1}} tilt={Math.sin(frame * 0.09) * 3} sy={breathe} />
+          look={{x: 0.5, y: -0.1}} tilt={Math.sin(frame * 0.09) * 3} sy={breathe}
+          armL={50} armR={125 + Math.sin(frame * 0.4) * 10} />
         {t < 28.6 && (
           <text x={290} y={1350 - 520} textAnchor="middle" fontSize={120} fontWeight={900} fontFamily="Inter, Arial, sans-serif" fill="#fff" stroke="#10303b" strokeWidth={14} paintOrder="stroke"
             transform={`rotate(${Math.sin(frame * 0.12) * 8} 290 ${1350 - 560}) scale(${q})`} style={{transformOrigin: '290px 800px'}}>?</text>
