@@ -1,0 +1,40 @@
+{
+  "fps": 30,
+  "durationSeconds": 29.9,
+  "scenes": [
+    {"id": 1, "from": 0, "to": 4, "name": "El gancho"},
+    {"id": 2, "from": 4, "to": 12, "name": "La explicación"},
+    {"id": 3, "from": 12, "to": 18, "name": "El remate cómico"},
+    {"id": 4, "from": 18, "to": 27, "name": "La solución"},
+    {"id": 5, "from": 27, "to": 29.9, "name": "Cierre"}
+  ],
+  "cues": [
+    {"id": 1, "speaker": "PATO",  "start": 0.2,  "end": 3.6,  "text": "Bobi, si uso la misma contraseña para todo… ¿me hackean todo de una?", "highlight": ["misma contraseña"]},
+    {"id": 2, "speaker": "BOBI",  "start": 4.2,  "end": 10.6, "text": "¡Sí, Pato! Si te roban una contraseña, pueden probarla en tu correo, tus redes y otras cuentas.", "highlight": ["te roban una"]},
+    {"id": 3, "speaker": "PATO",  "start": 12.2, "end": 15.0, "text": "Entonces… ¿mi contraseña “123456” no es segura?", "highlight": ["no es segura"]},
+    {"id": 4, "speaker": "BOBI",  "start": 15.2, "end": 17.8, "text": "¡ESO NO ES UNA CONTRASEÑA, ES UNA INVITACIÓN!", "highlight": ["INVITACIÓN"]},
+    {"id": 5, "speaker": "BOBI",  "start": 18.2, "end": 25.8, "text": "Usá una contraseña diferente para cada cuenta, un gestor de contraseñas y activá la verificación en dos pasos.", "highlight": ["contraseña diferente", "gestor", "verificación en dos pasos"]},
+    {"id": 6, "speaker": "PATO",  "start": 27.0, "end": 28.5, "text": "¿Y dónde guardo todo eso?", "highlight": []},
+    {"id": 7, "speaker": "BOBI",  "start": 28.6, "end": 29.9, "text": "¡En un gestor, Pato!", "highlight": ["gestor"]}
+  ],
+  "concepts": [
+    {"at": 19.0, "text": "CONTRASEÑAS ÚNICAS"},
+    {"at": 21.4, "text": "GESTOR DE CONTRASEÑAS"},
+    {"at": 23.6, "text": "VERIFICACIÓN EN DOS PASOS"}
+  ],
+  "endCard": {"at": 29.2, "text": "Seguinos para más tecnología"},
+  "sfx": [
+    {"at": 0.0,  "name": "bubble_pop"},
+    {"at": 3.7,  "name": "zoom_whoosh"},
+    {"at": 6.0,  "name": "digital_blip"},
+    {"at": 7.6,  "name": "digital_blip"},
+    {"at": 9.2,  "name": "digital_blip"},
+    {"at": 17.9, "name": "comic_hit"},
+    {"at": 19.0, "name": "soft_chime"},
+    {"at": 21.4, "name": "soft_chime"},
+    {"at": 23.6, "name": "soft_chime"},
+    {"at": 29.3, "name": "confirm"}
+  ],
+  "ambience": {"from": 0, "to": 29.9, "name": "underwater_bed"},
+  "music": {"from": 0, "to": 29.9, "name": "playful_tech_loop", "duckUnderDialogueDb": -18}
+}
