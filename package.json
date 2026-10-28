@@ -11,5 +11,9 @@
   "scripts": {
     "remotion:studio": "remotion studio",
     "remotion:render": "remotion render"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
   }
 }
