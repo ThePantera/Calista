@@ -1,0 +1,15 @@
+{
+  "name": "calista",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@remotion/cli": "^4.0.539",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.539"
+  },
+  "scripts": {
+    "remotion:studio": "remotion studio",
+    "remotion:render": "remotion render"
+  }
+}
