@@ -11,7 +11,7 @@
   "cues": [
     {"id": 1, "speaker": "PATO",  "start": 0.2,  "end": 3.6,  "text": "Bobi, si uso la misma contraseña para todo… ¿me hackean todo de una?", "highlight": ["misma contraseña"]},
     {"id": 2, "speaker": "BOBI",  "start": 4.2,  "end": 10.6, "text": "¡Sí, Pato! Si te roban una contraseña, pueden probarla en tu correo, tus redes y otras cuentas.", "highlight": ["te roban una"]},
-    {"id": 3, "speaker": "PATO",  "start": 12.2, "end": 15.0, "text": "Entonces… ¿mi contraseña “123456” no es segura?", "highlight": ["no es segura"]},
+    {"id": 3, "speaker": "PATO",  "start": 12.05, "end": 15.0, "text": "Entonces… ¿mi contraseña “123456” no es segura?", "highlight": ["no es segura"]},
     {"id": 4, "speaker": "BOBI",  "start": 15.2, "end": 17.8, "text": "¡ESO NO ES UNA CONTRASEÑA, ES UNA INVITACIÓN!", "highlight": ["INVITACIÓN"]},
     {"id": 5, "speaker": "BOBI",  "start": 18.2, "end": 25.8, "text": "Usá una contraseña diferente para cada cuenta, un gestor de contraseñas y activá la verificación en dos pasos.", "highlight": ["contraseña diferente", "gestor", "verificación en dos pasos"]},
     {"id": 6, "speaker": "PATO",  "start": 27.0, "end": 28.5, "text": "¿Y dónde guardo todo eso?", "highlight": []},
